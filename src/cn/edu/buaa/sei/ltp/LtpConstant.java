@@ -5,24 +5,70 @@ import java.util.HashMap;
 public class LtpConstant {
     
     /** 分词标注集 */
-    public static final HashMap<String, String> ws = getWS();
+    private static final HashMap<String, String> ws = allocWS();
     /** 词性标注集 */
-    public static final HashMap<String, String> pos = getPOS();
+    private static final HashMap<String, String> pos = allocPOS();
     /** 命名实体识别标注集 */
-    public static final HashMap<String, String> ner = getNER();
+    private static final HashMap<String, String> ner = allocNER();
     /** 依存句法关系 */
-    public static final HashMap<String, String> dp = getDP();
+    private static final HashMap<String, String> dp = allocDP();
     /** 语义角色类型 */
-    public static final HashMap<String, String> srl = getSRL();
+    private static final HashMap<String, String> srl = allocSRL();
 
 
     public LtpConstant() { }
     
     /**
+     * 分词标注集
+     * @param key 输入的查找键
+     * @return
+     */
+    public static String getWS(String key)
+    {
+        return ws.get(key);
+    }
+    
+    /** 
+     * 词性标注集 
+     * @param key 输入的查找键
+     */
+    public static String getPOS(String key)
+    {
+        return pos.get(key);
+    }
+    
+    /** 
+     * 命名实体识别标注集
+     * @param key 输入的查找键
+     */
+    public static String getNER(String key)
+    {
+        return ner.get(key);
+    }
+    
+    /** 
+     * 依存句法关系 
+     * @param key 输入的查找键
+     */
+    public static String getDP(String key)
+    {
+        return dp.get(key);
+    }
+    
+    /** 
+     * 语义角色类型集 
+     * @param key 输入的查找键
+     */
+    public static String getSRL(String key)
+    {
+        return srl.get(key);
+    }
+
+    /**
      * 
      * @return 分词标注集
      */
-    private static HashMap<String, String> getWS()
+    private static HashMap<String, String> allocWS()
     {
         HashMap<String, String> ret = new HashMap<String, String>();
         ret.put("B", "词首");
@@ -36,7 +82,7 @@ public class LtpConstant {
      * LTP 使用的是863词性标注集
      * @return 词性标注集
      */
-    private static HashMap<String, String> getPOS()
+    private static HashMap<String, String> allocPOS()
     {
         HashMap<String, String> ret = new HashMap<String, String>();
         ret.put("a", "adjective");
@@ -74,7 +120,7 @@ public class LtpConstant {
      * NE识别模块的标注结果采用O-S-B-I-E标注形式
      * @return 命名实体识别标注集
      */
-    private static HashMap<String, String> getNER()
+    private static HashMap<String, String> allocNER()
     {
         HashMap<String, String> ret = new HashMap<String, String>();
         ret.put("O", "这个词不是NE");
@@ -92,7 +138,7 @@ public class LtpConstant {
      *
      * @return 依存句法关系
      */
-    private static HashMap<String, String> getDP()
+    private static HashMap<String, String> allocDP()
     {
         HashMap<String, String> ret = new HashMap<String, String>();
         ret.put("SBV", "主谓关系");
@@ -116,7 +162,7 @@ public class LtpConstant {
      * 
      * @return 语义角色类型
      */
-    private static HashMap<String, String> getSRL()
+    private static HashMap<String, String> allocSRL()
     {
         HashMap<String, String> ret = new HashMap<String, String>();
         ret.put("ADV", "附加的，默认标记");

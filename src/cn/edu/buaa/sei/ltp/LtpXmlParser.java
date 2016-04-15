@@ -1,8 +1,11 @@
 package cn.edu.buaa.sei.ltp;
 
+import java.util.HashMap;
+
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -41,33 +44,65 @@ public class LtpXmlParser {
     private Document doc;
     private Logger logger;
     
-    private Node node_note;
-    private Node node_doc;
+
+    HashMap<String, String> map_note;
 
     public LtpXmlParser(AppMain app)
     {
         parser = new XmlParser();
         logger = app.getLogger();
+        logger.trace("LtpXmlParser create ...");
     }
-
-    public void process(String str_xml)
+    
+    private String getAttrValueByName(Node node, String attrname)
     {
-        doc = parser.parseStr2Xml(str_xml);
+        NamedNodeMap attrs;
+        if ((attrs=node.getAttributes())==null) {
+            return null;
+        } else {
+            return attrs.getNamedItem(attrname).getNodeValue();
+        }
+    }
+    
+    private void locateNode(String xml)
+    {
+        doc = parser.parseStr2Xml(xml);
         Element root = doc.getDocumentElement();
-        Node note = null, doc = null;
         NodeList nodes = root.getChildNodes();
         for (int i = 0; i < nodes.getLength(); ++i) {
             Node nd = nodes.item(i);
             if (nd.getNodeType() == Node.ELEMENT_NODE) {
                 if (nd.getNodeName().equals("note")) {
-                    note = nd;
                 }
                 if (nd.getNodeName().equals("doc")) {
-                    doc = nd;
                 }
             }
         }
-        logger.info(note.getAttributes().getNamedItem("pos").getNodeValue());
+    }
+    
+    public HashMap<String, String> parseNoteTag(Node note)
+    {
+        if (null==note) return null;
+        HashMap<String, String> map_note = new HashMap<String, String>();
+        NamedNodeMap attr = note.getAttributes();
+        String[] all_keys = {"sent", "word", "pos", "ne", "parser", "srl"};
+        for (String key : all_keys) {
+            map_note.put(key, attr.getNamedItem(key).getNodeValue());
+        }
+        return map_note;
+    }
+
+    public void process(String str_xml)
+    {
+        locateNode(str_xml);
+        map_note = parseNoteTag(doc.getElementsByTagName("note").item(0));
+        NodeList words = doc.getElementsByTagName("word");
+        for (int i = 0; i < words.getLength(); ++i) {
+            Node wd = words.item(i);
+            String text = getAttrValueByName(wd, "cont");
+            String pos = getAttrValueByName(wd, "pos");
+            logger.info(text + " - " + LtpConstant.getPOS(pos));
+        }
     }
 
 }

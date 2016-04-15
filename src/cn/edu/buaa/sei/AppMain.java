@@ -20,19 +20,62 @@ public class AppMain {
     private static Logger logger = null;
     private static InitConfig conf = null;
     
+    public static void main(String[] args) 
+    {
+        AppMain app = new AppMain();
+        logger.info("AppMain Starting ...");
+        logger.trace(JSON.toJSONString(conf));
+        
+//        DocxFileReader reader = new DocxFileReader(app);
+//        try {
+//            reader.open(null);
+//            reader.process();
+//            reader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        
+//        String sentence = "高安全机载操作系统软件从上电到下电的整个运行过程可分为以下五种状态：初始化状态、正常运行状态、错误状态";
+//        String xml = http.request(sentence);
+//        logger.info(xml);
+        
+        LtpXmlParser ltp_parser = new LtpXmlParser(app);
+        StringBuilder sb = new StringBuilder();
+        try {
+            BufferedReader breader = new BufferedReader(new FileReader("logs/test.xml"));
+            String line = null;
+            while ((line = breader.readLine())!=null) {
+                sb.append(line);
+            }
+            breader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        ltp_parser.process(sb.toString());
+    }
+    
     public AppMain() 
     {
         commonInit();
     }
     
-    public Logger getLogger()
+    private void commonInit()
     {
-        return logger;
+        setDefaultConfig(null);
+        logger = Logger.getLogger(AppMain.class);
+        PropertyConfigurator.configure(conf.getPath_to_log4j_properties());
     }
-    
+
     public InitConfig getConfig()
     {
         return conf;
+    }
+    
+    public Logger getLogger()
+    {
+        return logger;
     }
 
     private void setDefaultConfig(String path_to_config)
@@ -69,52 +112,6 @@ public class AppMain {
             conf.setLtp_server_host("127.0.0.1");
             conf.setLtp_server_path("/ltp");
             conf.setLtp_server_port("12345");
-
-            // System.out.println(JSON.toJSONString(conf));
         }
     }
-    
-    private void commonInit()
-    {
-        setDefaultConfig(null);
-        logger = Logger.getLogger(AppMain.class);
-        PropertyConfigurator.configure(conf.getPath_to_log4j_properties());
-    }
-
-    public static void main(String[] args) 
-    {
-        AppMain app = new AppMain();
-        logger.info("AppMain Starting ...");
-        logger.trace(JSON.toJSONString(conf));
-        
-//        DocxFileReader reader = new DocxFileReader(app);
-//        try {
-//            reader.open(null);
-//            reader.process();
-//            reader.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        
-//        String sentence = "高安全机载操作系统软件从上电到下电的整个运行过程可分为以下五种状态：初始化状态、正常运行状态、错误状态";
-//        String xml = http.request(sentence);
-//        logger.info(xml);
-        
-        LtpXmlParser ltp_parser = new LtpXmlParser(app);
-        StringBuilder sb = new StringBuilder();
-        try {
-            BufferedReader breader = new BufferedReader(new FileReader("logs/test.xml"));
-            String line = null;
-            while ((line = breader.readLine())!=null) {
-                sb.append(line);
-            }
-            breader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        ltp_parser.process(sb.toString());
-    }
-
 }
