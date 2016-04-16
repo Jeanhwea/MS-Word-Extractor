@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import cn.edu.buaa.sei.AppMain;
 import cn.edu.buaa.sei.ds.DocxJsonNode;
 import cn.edu.buaa.sei.ds.DocxTextNode;
+import cn.edu.buaa.sei.util.GenericFileIO;
 
 public class LtpStat {
     
@@ -58,8 +59,11 @@ public class LtpStat {
     }
     
     public void printSet() {
+        StringBuilder sb = new StringBuilder();
         for (Entry<String, Integer> e : counter.entrySet()) {
-            logger.info(e.getKey() + " - " + e.getValue());
+            sb.append(e.getKey() + "\t" + e.getValue() + "\n");
         }
+        
+        new GenericFileIO().write(sb.toString(), "output/stat.txt");
     }
 }

@@ -26,6 +26,7 @@ public class AppMain {
     public static void main(String[] args) 
     {
         AppMain app = new AppMain();
+        long tStart = System.currentTimeMillis();
         logger.info("AppMain Starting ...");
         logger.trace(JSON.toJSONString(conf));
         
@@ -38,10 +39,15 @@ public class AppMain {
             DocxJsonNode json = reader.getDocxTop();
             LtpStat stat = new LtpStat(app);
             stat.startCount(json);
+            stat.printSet();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
+        long tEnd = System.currentTimeMillis();
+        long tDelta = tEnd - tStart;
+        double elapsedSeconds = tDelta / 1000.0;
+        logger.info("AppMain finished, elapsedTimes: " + elapsedSeconds + "s");
     }
     
     public AppMain() 
