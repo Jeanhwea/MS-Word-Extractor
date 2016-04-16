@@ -9,17 +9,20 @@ import org.apache.log4j.Logger;
 import cn.edu.buaa.sei.AppMain;
 import cn.edu.buaa.sei.ds.DocxJsonNode;
 import cn.edu.buaa.sei.ds.DocxTextNode;
+import cn.edu.buaa.sei.ds.InitConfig;
 import cn.edu.buaa.sei.util.GenericFileIO;
 
 public class LtpStat {
     
     private HashMap<String, Integer> counter = new HashMap<String, Integer>();
+    private InitConfig conf;
     private Logger logger;
     private LtpClient ltp;
     private LtpXmlParser parser;
 
     public LtpStat(AppMain app)
     {
+        conf = app.getConfig();
         logger = app.getLogger();
         ltp = new LtpClient(app);
         parser = new LtpXmlParser(app);
@@ -40,6 +43,10 @@ public class LtpStat {
         return this.counter;
     }
     
+    /**
+     * 递归分析每个节点的文本
+     * @param node 将要分析的文本节点
+     */
     private void recursiveCount(DocxJsonNode node)
     {
         List<DocxTextNode> cnt = node.getContent();
@@ -59,11 +66,12 @@ public class LtpStat {
     }
     
     public void printSet() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder("word,times\n");
         for (Entry<String, Integer> e : counter.entrySet()) {
-            sb.append(e.getKey() + "\t" + e.getValue() + "\n");
+            sb.append(e.getKey() + "," + e.getValue() + "\n");
         }
         
-        new GenericFileIO().write(sb.toString(), "output/stat.txt");
+        logger.trace(sb.toString());
+        new GenericFileIO().write(sb.toString(), conf.getPath_to_word_output() + "stat.csv");
     }
 }

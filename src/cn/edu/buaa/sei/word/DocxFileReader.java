@@ -167,6 +167,7 @@ public class DocxFileReader {
             }
         }
         
+        this.write2JsonFile(conf.getPath_to_word_output() + "docx.json");
 //        String text = JSON.toJSONString(top);
 //        logger.info(text);
     }

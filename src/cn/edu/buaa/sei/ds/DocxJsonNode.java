@@ -13,7 +13,6 @@ public class DocxJsonNode implements Serializable {
 
     public DocxJsonNode()
     {
-        // TODO Auto-generated constructor stub
     }
 
     /**

@@ -9,7 +9,6 @@ public class DocxTextNode implements Serializable {
 
     public DocxTextNode()
     {
-        // TODO Auto-generated constructor stub
     }
 
     public DocxTextNode(String text)

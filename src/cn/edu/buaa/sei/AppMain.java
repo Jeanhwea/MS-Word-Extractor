@@ -13,8 +13,6 @@ import com.alibaba.fastjson.JSON;
 import cn.edu.buaa.sei.ds.DocxJsonNode;
 import cn.edu.buaa.sei.ds.InitConfig;
 import cn.edu.buaa.sei.ltp.LtpStat;
-import cn.edu.buaa.sei.ltp.LtpXmlParser;
-import cn.edu.buaa.sei.util.GenericFileIO;
 import cn.edu.buaa.sei.word.DocxFileReader;
 
 
