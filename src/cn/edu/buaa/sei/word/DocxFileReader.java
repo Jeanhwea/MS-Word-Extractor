@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -15,7 +14,10 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import com.alibaba.fastjson.JSON;
 
 import cn.edu.buaa.sei.AppMain;
-import cn.edu.buaa.sei.util.InitConfig;
+import cn.edu.buaa.sei.ds.DocxJsonNode;
+import cn.edu.buaa.sei.ds.DocxTextNode;
+import cn.edu.buaa.sei.ds.InitConfig;
+import cn.edu.buaa.sei.util.GenericFileIO;
 
 public class DocxFileReader {
 
@@ -29,19 +31,74 @@ public class DocxFileReader {
     private XWPFDocument docx;
 
     // document root elements
-    private HashMap<String, Object> top = null;
-
-    private void initConfig()
-    {
-        infile = conf.getPath_to_word_input() + conf.getInput_filename();
-        outfile = conf.getPath_to_word_output() + conf.getOutput_filename();
-    }
+    private DocxJsonNode top = null;
 
     public DocxFileReader(AppMain app)
     {
         logger = app.getLogger();
         conf = app.getConfig();
         initConfig();
+    }
+
+    // 将child标题节点添加到parent的"child"的数组里面
+    private void addChild(DocxJsonNode child, DocxJsonNode parent)
+    {
+        List<DocxJsonNode> array_child = parent.getChild();
+        array_child.add(child);
+    }
+
+    // 将content内容节点添加到parent的"content"的数组里面
+    private void addContent(DocxTextNode content, DocxJsonNode parent)
+    {
+        List<DocxTextNode> array_content = parent.getContent();
+        array_content.add(content);
+    }
+
+    // 构造一个JSON的内容节点
+    private DocxTextNode allocContentItem(String text)
+    {
+        return new DocxTextNode(text);
+    }
+
+    // 构造一个JSON的标题节点
+    private DocxJsonNode allocTitleItem(int level, String title)
+    {
+        DocxJsonNode item = new DocxJsonNode();
+        item.setLevel(level);
+        item.setTitle(title);
+        item.setContent(new ArrayList<DocxTextNode>());
+        item.setChild(new ArrayList<DocxJsonNode>());
+        return item;
+    }
+
+    public void close() throws IOException
+    {
+        if (null != docx)
+            docx.close();
+        if (null != fis)
+            fis.close();
+        if (null != fos)
+            fos.close();
+    }
+
+    public DocxJsonNode getDocxTop()
+    {
+        return this.top;
+    }
+
+    private String getJsonString()
+    {
+        if (null == top) {
+            this.process();
+        }
+        
+        return JSON.toJSONString(top);
+    }
+
+    private void initConfig()
+    {
+        infile = conf.getPath_to_word_input() + conf.getInput_filename();
+        outfile = conf.getPath_to_word_output() + conf.getOutput_filename();
     }
 
     public boolean open(String filename) throws IOException
@@ -63,84 +120,17 @@ public class DocxFileReader {
 
         return true;
     }
-
-    public boolean write(String filename) throws IOException
-    {
-        if (null == filename) {
-            logger.trace("Write to default file: " + outfile);
-        } else {
-            this.outfile = filename;
-            logger.trace("Write to file: " + outfile);
-        }
-
-        fos = new FileOutputStream(this.outfile);
-        if (null == fos)
-            return false;
-
-        if (null != docx) {
-            docx.write(fos);
-        } else {
-            logger.debug("OutputStream is NULL");
-        }
-
-        return true;
-    }
-
-    public boolean write(FileOutputStream fos)
-    {
-        if (null == fos) {
-            logger.trace("FileOutputStream is NULL");
-            return false;
-        }
-
-        return true;
-    }
-
-    // 构造一个JSON的标题节点
-    private HashMap<String, Object> allocTitleItem(int level, String title)
-    {
-        HashMap<String, Object> item = new HashMap<String, Object>();
-        item.put("level", new Integer(level));
-        item.put("title", title);
-        item.put("content", new ArrayList<Object>());
-        item.put("child", new ArrayList<Object>());
-        return item;
-    }
-
-    // 构造一个JSON的内容节点
-    private HashMap<String, Object> allocContentItem(String text)
-    {
-        HashMap<String, Object> cont = new HashMap<String, Object>();
-        cont.put("text", text);
-        return cont;
-    }
-
-    // 将child标题节点添加到parent的"child"的数组里面
-    private void addChild(HashMap<String, Object> child, HashMap<String, Object> parent)
-    {
-        @SuppressWarnings("unchecked")
-        List<Object> array_child = (List<Object>) parent.get("child");
-        array_child.add(child);
-    }
-
-    // 将conten内容节点添加到parent的"content"的数组里面
-    private void addContent(HashMap<String, Object> content, HashMap<String, Object> parent)
-    {
-        @SuppressWarnings("unchecked")
-        List<Object> array_child = (List<Object>) parent.get("content");
-        array_child.add(content);
-    }
-
+    
     public void process()
     {
         List<XWPFParagraph> paralist = docx.getParagraphs();
 
-        Stack<HashMap<String, Object>> stack = new Stack<HashMap<String, Object>>();
+        Stack<DocxJsonNode> stack = new Stack<DocxJsonNode>();
         top = allocTitleItem(0, "root");
         stack.push(top);
 
         int level = 0; // 当前的大纲级别
-        HashMap<String, Object> item = null;
+        DocxJsonNode item = null;
         for (XWPFParagraph para : paralist) {
             String text = para.getText().trim();
             String strStyle = para.getStyle();
@@ -161,6 +151,7 @@ public class DocxFileReader {
                 } else {
                     if (current_level > level)
                         logger.fatal("current level must less than level");
+                    // 回退到相应的大纲级别
                     while (level >= current_level) {
                         stack.pop();
                         --level;
@@ -175,18 +166,40 @@ public class DocxFileReader {
                 }
             }
         }
-        String jsontext = JSON.toJSONString(top);
-        logger.trace(jsontext);
+        
+//        String text = JSON.toJSONString(top);
+//        logger.info(text);
+    }
+    
+    /**
+     * 将读取到的word内容写入相应的JSON格式文件中
+     * @param filename 写入的文件名
+     * @return
+     */
+    public boolean write2JsonFile(String filename)
+    {
+        GenericFileIO fio = new GenericFileIO();
+        return fio.write(this.getJsonString(), filename);
     }
 
-    public void close() throws IOException
+    public boolean write(String filename) throws IOException
     {
-        if (null != docx)
-            docx.close();
-        if (null != fis)
-            fis.close();
-        if (null != fos)
-            fos.close();
+        if (null == filename) {
+            logger.trace("Write to default file: " + outfile);
+        } else {
+            this.outfile = filename;
+            logger.trace("Write to file: " + outfile);
+        }
+
+        fos = new FileOutputStream(this.outfile);
+
+        if (null != docx) {
+            docx.write(fos);
+        } else {
+            logger.debug("OutputStream is NULL");
+        }
+
+        return true;
     }
 
 }

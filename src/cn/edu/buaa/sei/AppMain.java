@@ -2,7 +2,6 @@ package cn.edu.buaa.sei;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -11,8 +10,12 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.alibaba.fastjson.JSON;
 
+import cn.edu.buaa.sei.ds.DocxJsonNode;
+import cn.edu.buaa.sei.ds.InitConfig;
+import cn.edu.buaa.sei.ltp.LtpStat;
 import cn.edu.buaa.sei.ltp.LtpXmlParser;
-import cn.edu.buaa.sei.util.InitConfig;
+import cn.edu.buaa.sei.util.GenericFileIO;
+import cn.edu.buaa.sei.word.DocxFileReader;
 
 
 public class AppMain {
@@ -26,34 +29,19 @@ public class AppMain {
         logger.info("AppMain Starting ...");
         logger.trace(JSON.toJSONString(conf));
         
-//        DocxFileReader reader = new DocxFileReader(app);
-//        try {
-//            reader.open(null);
-//            reader.process();
-//            reader.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        
-//        String sentence = "高安全机载操作系统软件从上电到下电的整个运行过程可分为以下五种状态：初始化状态、正常运行状态、错误状态";
-//        String xml = http.request(sentence);
-//        logger.info(xml);
-        
-        LtpXmlParser ltp_parser = new LtpXmlParser(app);
-        StringBuilder sb = new StringBuilder();
+        DocxFileReader reader = new DocxFileReader(app);
         try {
-            BufferedReader breader = new BufferedReader(new FileReader("logs/test.xml"));
-            String line = null;
-            while ((line = breader.readLine())!=null) {
-                sb.append(line);
-            }
-            breader.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            reader.open(null);
+            reader.process();
+            reader.close();
+
+            DocxJsonNode json = reader.getDocxTop();
+            LtpStat stat = new LtpStat(app);
+            stat.startCount(json);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ltp_parser.process(sb.toString());
+        
     }
     
     public AppMain() 
@@ -100,7 +88,6 @@ public class AppMain {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            
         } else {
             conf = new InitConfig();
             conf.setAuthor("Jeanhwea");

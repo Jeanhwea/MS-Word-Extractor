@@ -1,4 +1,4 @@
-package cn.edu.buaa.sei.util;
+package cn.edu.buaa.sei.ds;
 
 import java.io.Serializable;
 

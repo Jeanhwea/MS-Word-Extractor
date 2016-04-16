@@ -5,12 +5,16 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 
 import cn.edu.buaa.sei.AppMain;
+import cn.edu.buaa.sei.ds.InitConfig;
 import cn.edu.buaa.sei.util.HttpClient;
-import cn.edu.buaa.sei.util.InitConfig;
 
-public class LtpClient {
+/**
+ * 负责向LTP服务器提交句子，并接受返回的xml结果
+ * @author hujh
+ *
+ */
+public class LtpClient extends HttpClient {
 
-    @SuppressWarnings("unused")
     private Logger logger;
     private InitConfig conf;
 
@@ -18,13 +22,11 @@ public class LtpClient {
     private String port;
     private String path;
 
-    private HttpClient http;
-
     public LtpClient(AppMain app)
     {
+        super();
         logger = app.getLogger();
         conf = app.getConfig();
-        http = new HttpClient();
         initConfig();
     }
 
@@ -64,12 +66,12 @@ public class LtpClient {
         String str_xml = null;
         HashMap<String, String> args = ltpEncodeArgs(sentence);
 
-        String data = http.buildParams(args);
+        String data = buildParams(args);
 
-        if (http.urlOpen(host, port, path)) {
-            http.urlWriteData(data);
-            str_xml = http.urlReadData();
-            //logger.info(str_xml);
+        if (urlOpen(host, port, path)) {
+            urlWriteData(data);
+            str_xml = urlReadData();
+            logger.trace(str_xml);
         }
         
         return str_xml;

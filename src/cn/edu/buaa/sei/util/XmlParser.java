@@ -2,9 +2,7 @@ package cn.edu.buaa.sei.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -122,7 +120,7 @@ public class XmlParser {
     public Document readXmlFile(String filename)
     {
         File file = new File(filename);
-        return readXmlFile(file);
+        return this.readXmlFile(file);
     }
 
     /**
@@ -134,18 +132,8 @@ public class XmlParser {
      */
     public boolean writeXmlFile(Document doc, File file)
     {
-        try {
-            FileWriter writer = new FileWriter(file, false);
-            PrintWriter out = new PrintWriter(writer);
-            out.print(parseXml2Str(doc));
-            out.flush();
-            out.close();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return true;
+        GenericFileIO fio = new GenericFileIO();
+        return fio.write(this.parseXml2Str(doc), file);
     }
 
     /**
@@ -157,7 +145,7 @@ public class XmlParser {
      */
     public boolean writeXmlFile(Document doc, String filename)
     {
-        return writeXmlFile(doc, new File(filename));
+        return this.writeXmlFile(doc, new File(filename));
     }
 
 }

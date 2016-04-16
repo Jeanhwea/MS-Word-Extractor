@@ -85,18 +85,18 @@ public class LtpConstant {
     private static HashMap<String, String> allocPOS()
     {
         HashMap<String, String> ret = new HashMap<String, String>();
-        ret.put("a", "adjective");
-        ret.put("b", "other noun-modifier");
-        ret.put("c", "conjunction");
-        ret.put("d", "adverb");
-        ret.put("e", "exclamation");
-        ret.put("g", "morpheme");
-        ret.put("h", "prefix");
-        ret.put("i", "idiom");
-        ret.put("j", "abbreviation");
-        ret.put("k", "suffix");
-        ret.put("m", "number");
-        ret.put("n", "general noun");
+        ret.put("a",  "adjective");
+        ret.put("b",  "other noun-modifier");
+        ret.put("c",  "conjunction");
+        ret.put("d",  "adverb");
+        ret.put("e",  "exclamation");
+        ret.put("g",  "morpheme");
+        ret.put("h",  "prefix");
+        ret.put("i",  "idiom");
+        ret.put("j",  "abbreviation");
+        ret.put("k",  "suffix");
+        ret.put("m",  "number");
+        ret.put("n",  "general noun");
         ret.put("nd", "direction noun");
         ret.put("nh", "person name");
         ret.put("ni", "organization name");
@@ -104,15 +104,15 @@ public class LtpConstant {
         ret.put("ns", "geographical name");
         ret.put("nt", "temporal noun");
         ret.put("nz", "other proper noun");
-        ret.put("o", "onomatopoeia");
-        ret.put("p", "preposition");
-        ret.put("q", "quantity");
-        ret.put("r", "pronoun");
-        ret.put("u", "auxiliary");
-        ret.put("v", "verb");
+        ret.put("o",  "onomatopoeia");
+        ret.put("p",  "preposition");
+        ret.put("q",  "quantity");
+        ret.put("r",  "pronoun");
+        ret.put("u",  "auxiliary");
+        ret.put("v",  "verb");
         ret.put("wp", "punctuation");
         ret.put("ws", "foreign words");
-        ret.put("x", "non-lexeme");
+        ret.put("x",  "non-lexeme");
         return ret;
     }
     
@@ -123,14 +123,14 @@ public class LtpConstant {
     private static HashMap<String, String> allocNER()
     {
         HashMap<String, String> ret = new HashMap<String, String>();
-        ret.put("O", "这个词不是NE");
-        ret.put("S", "这个词单独构成一个NE");
-        ret.put("B", "这个词为一个NE的开始");
-        ret.put("I", "这个词为一个NE的中间");
+        ret.put("O",  "这个词不是NE");
+        ret.put("S",  "这个词单独构成一个NE");
+        ret.put("B",  "这个词为一个NE的开始");
+        ret.put("I",  "这个词为一个NE的中间");
         ret.put("Nh", "人名");
         ret.put("Ni", "机构名");
         ret.put("Ns", "地名");
-        ret.put("E", "这个词位一个NE的结尾");
+        ret.put("E",  "这个词位一个NE的结尾");
         return ret;
     } 
 
@@ -153,7 +153,7 @@ public class LtpConstant {
         ret.put("POB", "介宾关系");
         ret.put("LAD", "左附加关系");
         ret.put("RAD", "右附加关系");
-        ret.put("IS", "独立结构");
+        ret.put("IS",  "独立结构");
         ret.put("HED", "核心关系");
         return ret;
     }
