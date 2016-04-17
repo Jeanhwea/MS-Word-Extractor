@@ -13,16 +13,17 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.edu.buaa.sei.AppMain;
 import cn.edu.buaa.sei.ds.DocxJsonNode;
 import cn.edu.buaa.sei.ds.DocxTextNode;
-import cn.edu.buaa.sei.ds.InitConfig;
+import cn.edu.buaa.sei.ds.AppConfig;
+import cn.edu.buaa.sei.util.ConfigMgr;
 import cn.edu.buaa.sei.util.GenericFileIO;
+import cn.edu.buaa.sei.util.LoggerMgr;
 
 public class DocxFileReader {
 
+    private AppConfig conf;
     private Logger logger;
-    private InitConfig conf;
 
     private String infile;
     private String outfile;
@@ -33,10 +34,10 @@ public class DocxFileReader {
     // document root elements
     private DocxJsonNode top = null;
 
-    public DocxFileReader(AppMain app)
+    public DocxFileReader()
     {
-        logger = app.getLogger();
-        conf = app.getConfig();
+        conf = ConfigMgr.getConfig();
+        logger = LoggerMgr.getLogger();
         initConfig();
     }
 

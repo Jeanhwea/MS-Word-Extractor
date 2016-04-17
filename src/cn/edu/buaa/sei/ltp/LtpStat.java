@@ -6,26 +6,27 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import cn.edu.buaa.sei.AppMain;
 import cn.edu.buaa.sei.ds.DocxJsonNode;
 import cn.edu.buaa.sei.ds.DocxTextNode;
-import cn.edu.buaa.sei.ds.InitConfig;
+import cn.edu.buaa.sei.ds.AppConfig;
+import cn.edu.buaa.sei.util.ConfigMgr;
 import cn.edu.buaa.sei.util.GenericFileIO;
+import cn.edu.buaa.sei.util.LoggerMgr;
 
 public class LtpStat {
     
     private HashMap<String, Integer> counter = new HashMap<String, Integer>();
-    private InitConfig conf;
+    private AppConfig conf;
     private Logger logger;
     private LtpClient ltp;
     private LtpXmlParser parser;
 
-    public LtpStat(AppMain app)
+    public LtpStat()
     {
-        conf = app.getConfig();
-        logger = app.getLogger();
-        ltp = new LtpClient(app);
-        parser = new LtpXmlParser(app);
+        conf = ConfigMgr.getConfig();
+        logger = LoggerMgr.getLogger();
+        ltp = new LtpClient();
+        parser = new LtpXmlParser();
     }
     
     public void countWords(String word)

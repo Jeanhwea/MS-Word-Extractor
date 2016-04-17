@@ -2,7 +2,7 @@ package cn.edu.buaa.sei.ds;
 
 import java.io.Serializable;
 
-public class InitConfig implements Serializable {
+public class AppConfig implements Serializable {
 
     private static final long serialVersionUID = 1754904648061167616L;
     private String author;
@@ -21,7 +21,7 @@ public class InitConfig implements Serializable {
     private String ltp_server_port;
     private String ltp_server_path;
 
-    public InitConfig()
+    public AppConfig()
     {
         this.author="Jeanhwea";
     }

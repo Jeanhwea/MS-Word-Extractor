@@ -9,7 +9,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import cn.edu.buaa.sei.AppMain;
+import cn.edu.buaa.sei.util.LoggerMgr;
 import cn.edu.buaa.sei.util.XmlParser;
 
 /**
@@ -45,10 +45,10 @@ public class LtpXmlParser {
     private Logger logger;
     private HashSet<String> pos_filter;
 
-    public LtpXmlParser(AppMain app)
+    public LtpXmlParser()
     {
         parser = new XmlParser();
-        logger = app.getLogger();
+        logger = LoggerMgr.getLogger();
         this.initFilter();
         logger.trace("LtpXmlParser create ...");
     }

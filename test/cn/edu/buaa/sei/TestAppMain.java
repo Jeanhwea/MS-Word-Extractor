@@ -10,7 +10,7 @@ public class TestAppMain extends TestCase {
 
     public void testMain()
     {
-        final AppMain app = new AppMain();
-        app.getLogger().info("AppMain Starting ...");
-   }
+        AppMain app = new AppMain();
+        app.main(null);
+    }
 }
