@@ -98,7 +98,7 @@ public class HttpClient {
             InputStream is = conn.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line + System.lineSeparator());
             }
         } catch (IOException e) {
             e.printStackTrace();

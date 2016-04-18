@@ -25,7 +25,6 @@ public class AppMain {
         logger = LoggerMgr.getLogger();
         long tStart = System.currentTimeMillis();
         logger.info("AppMain Starting ...");
-        logger.trace("AppMain Starting trace ...");
         logger.trace(JSON.toJSONString(conf));
         
         DocxFileReader reader = new DocxFileReader();

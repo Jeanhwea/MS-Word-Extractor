@@ -67,9 +67,9 @@ public class LtpStat {
     }
     
     public void printSet() {
-        StringBuilder sb = new StringBuilder("word,times\n");
+        StringBuilder sb = new StringBuilder("word,times" + System.lineSeparator());
         for (Entry<String, Integer> e : counter.entrySet()) {
-            sb.append(e.getKey() + "," + e.getValue() + "\n");
+            sb.append(e.getKey() + "," + e.getValue() + System.lineSeparator());
         }
         
         logger.trace(sb.toString());
