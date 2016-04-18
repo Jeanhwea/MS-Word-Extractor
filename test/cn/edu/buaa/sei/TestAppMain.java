@@ -1,5 +1,6 @@
 package cn.edu.buaa.sei;
 
+import cn.edu.buaa.sei.util.ConfigMgr;
 import junit.framework.TestCase;
 
 public class TestAppMain extends TestCase {
@@ -10,7 +11,7 @@ public class TestAppMain extends TestCase {
 
     public void testMain()
     {
-        AppMain app = new AppMain();
-        app.main(null);
+        ConfigMgr.setPath2Config("input/init2.json");
+        AppMain.main(null);
     }
 }

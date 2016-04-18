@@ -21,8 +21,11 @@ public class AppMain {
     
     public static void main(String[] args) 
     {
+        conf = ConfigMgr.getConfig();
+        logger = LoggerMgr.getLogger();
         long tStart = System.currentTimeMillis();
         logger.info("AppMain Starting ...");
+        logger.trace("AppMain Starting trace ...");
         logger.trace(JSON.toJSONString(conf));
         
         DocxFileReader reader = new DocxFileReader();
@@ -45,9 +48,4 @@ public class AppMain {
         logger.info("AppMain finished, elapsedTimes: " + elapsedSeconds + "s");
     }
     
-    public AppMain() 
-    {
-        conf = ConfigMgr.getConfig();
-        logger = LoggerMgr.getLogger();
-    }
 }

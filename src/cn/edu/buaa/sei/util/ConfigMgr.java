@@ -8,17 +8,25 @@ import cn.edu.buaa.sei.ds.AppConfig;
 
 public class ConfigMgr {
     
-    private static final String PATH_TO_INIT_CONFIG = "input/init.json";
-    private static final AppConfig conf = allocConfig();
+    private static String PATH_TO_INIT_CONFIG = "input/init.json";
+    private static AppConfig conf = null;
 
     public ConfigMgr()
     {
 
     }
-
+    
     public static AppConfig getConfig()
     {
+        if (null == conf) {
+            conf = allocConfig();
+        }
         return conf;
+    }
+    
+    public static void setPath2Config(String filename)
+    {
+        PATH_TO_INIT_CONFIG = filename;
     }
     
     public static void write2File(String filename)
@@ -45,7 +53,7 @@ public class ConfigMgr {
     private static AppConfig allocConfig()
     {
         File file = new File(PATH_TO_INIT_CONFIG);
-        if (file.exists()) {
+        if (!file.exists()) {
             return defaultConfig();
         } else {
             String text = new GenericFileIO().read(PATH_TO_INIT_CONFIG);
