@@ -56,7 +56,7 @@ public class ConfigMgr {
         if (!file.exists()) {
             return defaultConfig();
         } else {
-            String text = new GenericFileIO().read(PATH_TO_INIT_CONFIG);
+            String text = new GenericFileIO().load(PATH_TO_INIT_CONFIG);
             return JSON.parseObject(text, AppConfig.class);
         }
     }

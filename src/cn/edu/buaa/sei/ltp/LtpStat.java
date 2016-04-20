@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import cn.edu.buaa.sei.ds.DocxJsonNode;
-import cn.edu.buaa.sei.ds.DocxTextNode;
+import cn.edu.buaa.sei.ds.WordTitleNode;
+import cn.edu.buaa.sei.ds.WordTextNode;
 import cn.edu.buaa.sei.ds.AppConfig;
 import cn.edu.buaa.sei.util.ConfigMgr;
 import cn.edu.buaa.sei.util.GenericFileIO;
@@ -48,20 +48,20 @@ public class LtpStat {
      * 递归分析每个节点的文本
      * @param node 将要分析的文本节点
      */
-    private void recursiveCount(DocxJsonNode node)
+    private void recursiveCount(WordTitleNode node)
     {
-        List<DocxTextNode> cnt = node.getContent();
-        for (DocxTextNode t : cnt) {
+        List<WordTextNode> cnt = node.getContent();
+        for (WordTextNode t : cnt) {
             String xml = ltp.request(t.getText());
             parser.process(xml, this);
         }
         
-        for (DocxJsonNode child : node.getChild()) {
+        for (WordTitleNode child : node.getChild()) {
             this.recursiveCount(child);
         }
     }
     
-    public void startCount(DocxJsonNode top)
+    public void startCount(WordTitleNode top)
     {
         this.recursiveCount(top);
     }

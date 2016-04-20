@@ -2,16 +2,16 @@ package cn.edu.buaa.sei.ds;
 
 import java.io.Serializable;
 
-public class DocxTextNode implements Serializable {
+public class WordTextNode implements Serializable {
 
     private static final long serialVersionUID = 6226935724305291071L;
     String text;
 
-    public DocxTextNode()
+    public WordTextNode()
     {
     }
 
-    public DocxTextNode(String text)
+    public WordTextNode(String text)
     {
         this.text = text;
     }

@@ -3,15 +3,15 @@ package cn.edu.buaa.sei.ds;
 import java.io.Serializable;
 import java.util.List;
 
-public class DocxJsonNode implements Serializable {
+public class WordTitleNode implements Serializable {
 
     private static final long serialVersionUID = -8984758739072932015L;
     int level;
     String title;
-    List<DocxTextNode> content;
-    List<DocxJsonNode> child;
+    List<WordTextNode> content;
+    List<WordTitleNode> child;
 
-    public DocxJsonNode()
+    public WordTitleNode()
     {
     }
 
@@ -50,7 +50,7 @@ public class DocxJsonNode implements Serializable {
     /**
      * @return the content
      */
-    public List<DocxTextNode> getContent()
+    public List<WordTextNode> getContent()
     {
         return content;
     }
@@ -58,7 +58,7 @@ public class DocxJsonNode implements Serializable {
     /**
      * @param content the content to set
      */
-    public void setContent(List<DocxTextNode> content)
+    public void setContent(List<WordTextNode> content)
     {
         this.content = content;
     }
@@ -66,7 +66,7 @@ public class DocxJsonNode implements Serializable {
     /**
      * @return the child
      */
-    public List<DocxJsonNode> getChild()
+    public List<WordTitleNode> getChild()
     {
         return child;
     }
@@ -74,7 +74,7 @@ public class DocxJsonNode implements Serializable {
     /**
      * @param child the child to set
      */
-    public void setChild(List<DocxJsonNode> child)
+    public void setChild(List<WordTitleNode> child)
     {
         this.child = child;
     }

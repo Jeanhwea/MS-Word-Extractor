@@ -6,11 +6,12 @@ import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.edu.buaa.sei.ds.DocxJsonNode;
+import cn.edu.buaa.sei.ds.WordTitleNode;
 import cn.edu.buaa.sei.ds.AppConfig;
 import cn.edu.buaa.sei.ltp.LtpStat;
 import cn.edu.buaa.sei.util.ConfigMgr;
 import cn.edu.buaa.sei.util.LoggerMgr;
+import cn.edu.buaa.sei.word.DocFileReader;
 import cn.edu.buaa.sei.word.DocxFileReader;
 
 
@@ -21,22 +22,25 @@ public class AppMain {
     
     public static void main(String[] args) 
     {
+        ConfigMgr.setPath2Config("input/init.txt"); // 测试
         conf = ConfigMgr.getConfig();
         logger = LoggerMgr.getLogger();
         long tStart = System.currentTimeMillis();
         logger.info("AppMain Starting ...");
         logger.trace(JSON.toJSONString(conf));
         
-        DocxFileReader reader = new DocxFileReader();
+//        DocxFileReader reader = new DocxFileReader();
+        DocFileReader reader = new DocFileReader();
         try {
-            reader.open(null);
+            String file_to_open = conf.getPath_to_word_input() + conf.getInput_filename();
+            reader.open(file_to_open);
             reader.process();
             reader.close();
 
-            DocxJsonNode json = reader.getDocxTop();
-            LtpStat stat = new LtpStat();
-            stat.startCount(json);
-            stat.printSet();
+//            WordTitleNode json = reader.getDocxTop();
+//            LtpStat stat = new LtpStat();
+//            stat.startCount(json);
+//            stat.printSet();
         } catch (IOException e) {
             e.printStackTrace();
         }

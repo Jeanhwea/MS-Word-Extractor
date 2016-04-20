@@ -106,8 +106,9 @@ public class LtpXmlParser {
             Node wd = words.item(i);
             String text = getAttrValueByName(wd, "cont");
             String pos = getAttrValueByName(wd, "pos");
-            if (!pos_filter.contains(pos))
+            if (!pos_filter.contains(pos)) {
                 stat.countWords(text);
+            }
         }
     }
 
