@@ -11,6 +11,7 @@ import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
 import cn.edu.buaa.sei.ds.DocxParagraph;
 import cn.edu.buaa.sei.ds.WordParagraph;
+import cn.edu.buaa.sei.util.Helper;
 
 
 public class DocxFileReader extends ComWordReader {
@@ -56,7 +57,7 @@ public class DocxFileReader extends ComWordReader {
     {
         List<WordParagraph> list = new ArrayList<WordParagraph>();
         for (XWPFParagraph p : docx.getParagraphs()) {
-            list.add(new DocxParagraph(p.getStyle(), p.getText()));
+            list.add(new DocxParagraph(p.getStyle(), Helper.rmNonUTF8(p.getText())));
         }
         this.paras2Tree(list);
     }

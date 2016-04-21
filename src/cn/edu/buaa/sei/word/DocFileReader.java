@@ -3,17 +3,16 @@ package cn.edu.buaa.sei.word;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import org.apache.poi.hwpf.HWPFDocument;
-import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.hwpf.model.StyleSheet;
 import org.apache.poi.hwpf.usermodel.Paragraph;
 import org.apache.poi.hwpf.usermodel.Range;
 
 import cn.edu.buaa.sei.ds.DocParagraph;
 import cn.edu.buaa.sei.ds.WordParagraph;
+import cn.edu.buaa.sei.util.Helper;
 
 public class DocFileReader extends ComWordReader {
 
@@ -62,11 +61,10 @@ public class DocFileReader extends ComWordReader {
             String strStyle = stylesheet.getStyleDescription(para.getStyleIndex()).getName();
             String text = Paragraph.stripFields(para.text());
             if (null!=strStyle && null!=text) {
-                // TODO: remove non-utf8 text
-                list.add(new DocParagraph(strStyle, text));
+                list.add(new DocParagraph(strStyle, Helper.rmNonUTF8(text)));
             }
         }
         this.paras2Tree(list);
-        this.write2JsonFile("output/aa.json");
+        this.write2JsonFile(conf.getPath_to_word_output()+conf.getInput_filename()+".json");
     }
 }
