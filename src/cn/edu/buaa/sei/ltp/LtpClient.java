@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 
-import cn.edu.buaa.sei.ds.AppConfig;
+import cn.edu.buaa.sei.AppConfig;
 import cn.edu.buaa.sei.util.ConfigMgr;
 import cn.edu.buaa.sei.util.HttpClient;
 import cn.edu.buaa.sei.util.LoggerMgr;

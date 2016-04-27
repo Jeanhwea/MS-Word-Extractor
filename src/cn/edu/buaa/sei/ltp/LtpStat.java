@@ -6,12 +6,12 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
-import cn.edu.buaa.sei.ds.WordTitleNode;
-import cn.edu.buaa.sei.ds.WordTextNode;
-import cn.edu.buaa.sei.ds.AppConfig;
+import cn.edu.buaa.sei.AppConfig;
 import cn.edu.buaa.sei.util.ConfigMgr;
 import cn.edu.buaa.sei.util.GenericFileIO;
 import cn.edu.buaa.sei.util.LoggerMgr;
+import cn.edu.buaa.sei.word.ds.WordTextNode;
+import cn.edu.buaa.sei.word.ds.WordTitleNode;
 
 public class LtpStat {
     

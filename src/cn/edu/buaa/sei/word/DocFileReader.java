@@ -10,9 +10,9 @@ import org.apache.poi.hwpf.model.StyleSheet;
 import org.apache.poi.hwpf.usermodel.Paragraph;
 import org.apache.poi.hwpf.usermodel.Range;
 
-import cn.edu.buaa.sei.ds.DocParagraph;
-import cn.edu.buaa.sei.ds.WordParagraph;
 import cn.edu.buaa.sei.util.Helper;
+import cn.edu.buaa.sei.word.ds.DocParagraph;
+import cn.edu.buaa.sei.word.ds.WordParagraph;
 
 public class DocFileReader extends ComWordReader {
 

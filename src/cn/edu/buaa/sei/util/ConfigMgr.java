@@ -4,7 +4,7 @@ import java.io.File;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.edu.buaa.sei.ds.AppConfig;
+import cn.edu.buaa.sei.AppConfig;
 
 public class ConfigMgr {
     

@@ -6,13 +6,12 @@ import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
 
-import cn.edu.buaa.sei.ds.WordTitleNode;
-import cn.edu.buaa.sei.ds.AppConfig;
 import cn.edu.buaa.sei.ltp.LtpStat;
 import cn.edu.buaa.sei.util.ConfigMgr;
 import cn.edu.buaa.sei.util.LoggerMgr;
 import cn.edu.buaa.sei.word.DocFileReader;
 import cn.edu.buaa.sei.word.DocxFileReader;
+import cn.edu.buaa.sei.word.ds.WordTitleNode;
 
 
 public class AppMain {

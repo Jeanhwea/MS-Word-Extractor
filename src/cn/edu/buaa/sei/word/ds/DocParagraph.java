@@ -1,11 +1,11 @@
-package cn.edu.buaa.sei.ds;
+package cn.edu.buaa.sei.word.ds;
 
-public class DocxParagraph implements WordParagraph {
+public class DocParagraph implements WordParagraph {
     
-    private String text;
     private String style;
+    private String text;
 
-    public DocxParagraph(String style, String text)
+    public DocParagraph(String style, String text)
     {
         this.style = style;
         this.text = text;

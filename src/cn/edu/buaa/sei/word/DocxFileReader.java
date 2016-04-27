@@ -9,9 +9,9 @@ import java.util.List;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 
-import cn.edu.buaa.sei.ds.DocxParagraph;
-import cn.edu.buaa.sei.ds.WordParagraph;
 import cn.edu.buaa.sei.util.Helper;
+import cn.edu.buaa.sei.word.ds.DocxParagraph;
+import cn.edu.buaa.sei.word.ds.WordParagraph;
 
 
 public class DocxFileReader extends ComWordReader {
