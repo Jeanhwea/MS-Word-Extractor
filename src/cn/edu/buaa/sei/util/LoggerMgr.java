@@ -22,7 +22,7 @@ public class LoggerMgr {
     private static Logger allocLogger()
     {
         Logger ret = Logger.getLogger(LOGGER_CLASS);
-        String logger4j_filename = ConfigMgr.getConfig().getPath_to_log4j_properties();
+        String logger4j_filename = ConfigMgr.getConfig().getPath2Log4jProperties();
         PropertyConfigurator.configure(logger4j_filename);
         return ret;
     }

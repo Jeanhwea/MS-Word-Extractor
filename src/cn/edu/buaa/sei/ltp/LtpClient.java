@@ -34,9 +34,9 @@ public class LtpClient extends HttpClient {
 
     private void initConfig()
     {
-        host = conf.getLtp_server_host();
-        port = conf.getLtp_server_port();
-        path = conf.getLtp_server_path();
+        host = conf.getLtpServerHost();
+        port = conf.getLtpServerPort();
+        path = conf.getLtpServerPath();
     }
     
     /**

@@ -59,12 +59,15 @@ public class DocxFileReader extends ComWordReader {
     @Override
     public void processParagraphs()
     {
-        List<WordParagraph> list = new ArrayList<WordParagraph>();
+        List<WordParagraph> list = new ArrayList<>();
         for (XWPFParagraph p : docx.getParagraphs()) {
-            list.add(new DocxParagraph(p.getStyle(), Helper.rmNonUTF8(p.getText())));
+            String style, text;
+            style = p.getStyle();
+            text = Helper.rmNonUTF8(p.getText());
+            list.add(new DocxParagraph(style, text));
         }
         this.paras2Tree(list);
-        this.write2JsonFile(conf.getPath_to_word_output()+conf.getInput_filename()+".json");
+        this.write2JsonFile(conf.getPath2WordOutput()+conf.getInputFilename()+".json");
     }
 
 
@@ -72,19 +75,24 @@ public class DocxFileReader extends ComWordReader {
     public void processTables()
     {
         // TODO Auto-generated method stub
-        List<XWPFTable> tlbs = docx.getTables();
-        for (XWPFTable tab : tlbs) {
+        for (XWPFTable tab : docx.getTables()) {
+            String useCaseName;
             List<XWPFTableRow> rows = tab.getRows();
             for (int i = 0; i < rows.size(); ++i) {
                 List<XWPFTableCell> cells = rows.get(i).getTableCells();
-                for (int j = 0; j < cells.size(); ++j) {
-                    XWPFTableCell cell = cells.get(j);
-                    if (null != cell)
-                        logger.info(String.format("(%d, %d): %s", i, j, cell.getText()));
+                int nCol = cells.size();
+                if (nCol >= 2) {
+                    String keyStr = cells.get(0).getText();
+                    String valStr = cells.get(1).getText();
+                    if (keyStr.trim().startsWith("Use case name")) {
+                        useCaseName = valStr;
+                        logger.info(useCaseName);
+                    } else {
+                        continue;
+                    }
                 }
             }
         }
-        
     }
     
 }

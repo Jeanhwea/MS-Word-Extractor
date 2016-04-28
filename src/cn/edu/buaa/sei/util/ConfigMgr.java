@@ -39,14 +39,14 @@ public class ConfigMgr {
     {
         AppConfig appconfig = new AppConfig();
         appconfig.setAuthor("Jeanhwea");
-        appconfig.setPath_to_word_input("/home/hujh/Shared/input/");
-        appconfig.setPath_to_word_output("output/");
-        appconfig.setInput_filename("00-631需求文档.docx");
-        appconfig.setOutput_filename("simple.out");
-        appconfig.setPath_to_log4j_properties("input/log4j.properties");
-        appconfig.setLtp_server_host("127.0.0.1");
-        appconfig.setLtp_server_path("/ltp");
-        appconfig.setLtp_server_port("12345");
+        appconfig.setPath2WordInput("/home/hujh/Shared/input/");
+        appconfig.setPath2WordOutput("output/");
+        appconfig.setInputFilename("00-631需求文档.docx");
+        appconfig.setOutputFilename("simple.out");
+        appconfig.setPath2Log4jProperties("input/log4j.properties");
+        appconfig.setLtpServerHost("127.0.0.1");
+        appconfig.setLtpServerPort("12345");
+        appconfig.setLtpServerPath("/ltp");
         return appconfig;
     }
 

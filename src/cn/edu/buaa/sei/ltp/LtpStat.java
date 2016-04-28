@@ -73,6 +73,6 @@ public class LtpStat {
         }
         
         logger.trace(sb.toString());
-        new GenericFileIO().write(sb.toString(), conf.getPath_to_word_output() + "stat.csv");
+        new GenericFileIO().write(sb.toString(), conf.getPath2WordOutput() + "stat.csv");
     }
 }
