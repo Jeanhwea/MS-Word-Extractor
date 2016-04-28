@@ -8,6 +8,9 @@ import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFTable;
+import org.apache.poi.xwpf.usermodel.XWPFTableCell;
+import org.apache.poi.xwpf.usermodel.XWPFTableRow;
 
 import cn.edu.buaa.sei.util.Helper;
 import cn.edu.buaa.sei.word.ds.DocxParagraph;
@@ -53,13 +56,35 @@ public class DocxFileReader extends ComWordReader {
         return this.open(new File(filename));
     }
     
-    public void process()
+    @Override
+    public void processParagraphs()
     {
         List<WordParagraph> list = new ArrayList<WordParagraph>();
         for (XWPFParagraph p : docx.getParagraphs()) {
             list.add(new DocxParagraph(p.getStyle(), Helper.rmNonUTF8(p.getText())));
         }
         this.paras2Tree(list);
+        this.write2JsonFile(conf.getPath_to_word_output()+conf.getInput_filename()+".json");
+    }
+
+
+    @Override
+    public void processTables()
+    {
+        // TODO Auto-generated method stub
+        List<XWPFTable> tlbs = docx.getTables();
+        for (XWPFTable tab : tlbs) {
+            List<XWPFTableRow> rows = tab.getRows();
+            for (int i = 0; i < rows.size(); ++i) {
+                List<XWPFTableCell> cells = rows.get(i).getTableCells();
+                for (int j = 0; j < cells.size(); ++j) {
+                    XWPFTableCell cell = cells.get(j);
+                    if (null != cell)
+                        logger.info(String.format("(%d, %d): %s", i, j, cell.getText()));
+                }
+            }
+        }
+        
     }
     
 }

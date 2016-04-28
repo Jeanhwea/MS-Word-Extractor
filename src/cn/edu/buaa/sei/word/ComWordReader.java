@@ -21,7 +21,7 @@ import cn.edu.buaa.sei.word.ds.WordTitleNode;
  * @author hujh
  *
  */
-public class ComWordReader {
+public abstract class ComWordReader {
 
     public AppConfig conf;
     public Logger logger;
@@ -84,26 +84,23 @@ public class ComWordReader {
     }
     
     /**
-     * 将当前style字符串转化成相应的大纲级别
+     * 将当前style字符串转化成相应的大纲级别, 一般大纲级别默认为0-9
      * @param style 字符串
-     * @return 大纲级别
+     * @return 大纲级别，返回-1,表示无法解析的大纲级别; 返回0,表示非标题的正文内容.
      */
     private int style2Level(String style)
     {
-        int level = -1;
-
-        if (null == style) return level;
-       
-        if (style.matches("[0-9]")) {
-            level = Integer.parseInt(style);
+        if (null == style) return -1;
+        
+        String[] stylePrefixs = {"标题 ", ""};
+        
+        for (String prefix : stylePrefixs) {
+            if (style.matches(prefix + "[0-9]")) {
+                return Integer.parseInt(style.replace(prefix, ""));
+            }
         }
         
-        if (style.matches("标题 [0-9]")) {
-            String text = style.substring(3);
-            level = Integer.parseInt(text);
-        }
-        
-        return level;
+        return 0;
     }
 
     public void paras2Tree(List<WordParagraph> paralist)
@@ -121,7 +118,7 @@ public class ComWordReader {
             String text = para.getText();
             String strStyle = para.getStyle();
 
-            if (this.style2Level(strStyle)>=0) {
+            if (this.style2Level(strStyle)>0) {
                 // 如果当前段落是标题
                 int current_level = this.style2Level(strStyle);
                 if (current_level == level + 1) {
@@ -164,5 +161,14 @@ public class ComWordReader {
         GenericFileIO fio = new GenericFileIO();
         return fio.write(this.getJsonString(), filename);
     }
-
+    
+    /**
+     * 处理word文档中正文的抽象类
+     */
+    public abstract void processParagraphs();
+    
+    /**
+     * 处理word文档中表格的抽象类
+     */
+    public abstract void processTables();
 }

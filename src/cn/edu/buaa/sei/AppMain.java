@@ -28,12 +28,13 @@ public class AppMain {
         logger.info("AppMain Starting ...");
         logger.trace(JSON.toJSONString(conf));
         
-//        DocxFileReader reader = new DocxFileReader();
-        DocFileReader reader = new DocFileReader();
+        DocxFileReader reader = new DocxFileReader();
+//        DocFileReader reader = new DocFileReader();
         try {
             String file_to_open = conf.getPath_to_word_input() + conf.getInput_filename();
             reader.open(file_to_open);
-            reader.process();
+//            reader.processParagraphs();
+            reader.processTables();
             reader.close();
 
 //            WordTitleNode json = reader.getDocxTop();
