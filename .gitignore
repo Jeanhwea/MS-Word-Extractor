@@ -1,8 +1,7 @@
+*.iml
+.idea/*
+out/*
 bin/*
 input/*
 logs/*
 output/*
-/bin/
-/input/
-/logs/
-/output/
