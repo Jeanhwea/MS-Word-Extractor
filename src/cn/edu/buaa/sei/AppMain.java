@@ -2,6 +2,7 @@ package cn.edu.buaa.sei;
 
 import java.io.IOException;
 
+import cn.edu.buaa.sei.util.StopWatch;
 import org.apache.log4j.Logger;
 
 import com.alibaba.fastjson.JSON;
@@ -20,7 +21,7 @@ public class AppMain {
     {
         conf = ConfigMgr.getConfig();
         logger = LoggerMgr.getLogger();
-        long tStart = System.currentTimeMillis();
+        StopWatch watch = new StopWatch();
         logger.info("AppMain Starting ...");
         logger.trace(JSON.toJSONString(conf));
         
@@ -41,10 +42,7 @@ public class AppMain {
             e.printStackTrace();
         }
 
-        long tEnd = System.currentTimeMillis();
-        long tDelta = tEnd - tStart;
-        double elapsedSeconds = tDelta / 1000.0;
-        logger.info("AppMain finished, elapsedTimes: " + elapsedSeconds + "s");
+        logger.info("AppMain finished, elapsedTimes: " + watch.getElapsedTimeInSeconds()+ "s");
     }
     
 }
