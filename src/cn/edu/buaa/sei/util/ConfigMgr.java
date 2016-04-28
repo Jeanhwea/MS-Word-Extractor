@@ -41,8 +41,8 @@ public class ConfigMgr {
         appconfig.setAuthor("Jeanhwea");
         appconfig.setPath2WordInput("/home/hujh/Shared/input/");
         appconfig.setPath2WordOutput("output/");
-        appconfig.setInputFilename("00-631需求文档.docx");
-        appconfig.setOutputFilename("simple.out");
+        appconfig.setInputFileName("00-631需求文档.docx");
+        appconfig.setOutputFileName("simple.out");
         appconfig.setPath2Log4jProperties("input/log4j.properties");
         appconfig.setLtpServerHost("127.0.0.1");
         appconfig.setLtpServerPort("12345");

@@ -65,7 +65,7 @@ public class DocFileReader extends ComWordReader {
             }
         }
         this.paras2Tree(list);
-        this.write2JsonFile(conf.getPath2WordOutput()+conf.getInputFilename()+".json");
+        this.write2JsonFile(conf.getPath2WordOutput()+conf.getInputFileName()+".json");
     }
 
     @Override

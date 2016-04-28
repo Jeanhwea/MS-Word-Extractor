@@ -18,7 +18,6 @@ public class AppMain {
     
     public static void main(String[] args) 
     {
-        ConfigMgr.setPath2Config("input/init.txt"); // 测试
         conf = ConfigMgr.getConfig();
         logger = LoggerMgr.getLogger();
         long tStart = System.currentTimeMillis();
@@ -28,7 +27,7 @@ public class AppMain {
         DocxFileReader reader = new DocxFileReader();
 //        DocFileReader reader = new DocFileReader();
         try {
-            String file_to_open = conf.getPath2WordInput() + conf.getInputFilename();
+            String file_to_open = conf.getPath2WordInput() + conf.getInputFileName();
             reader.open(file_to_open);
 //            reader.processParagraphs();
             reader.processTables();

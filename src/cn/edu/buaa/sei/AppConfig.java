@@ -10,8 +10,8 @@ public class AppConfig implements Serializable {
     // 文件输入和输出的路径和文件名
     private String path2WordInput;
     private String path2WordOutput;
-    private String inputFilename;
-    private String outputFilename;
+    private String inputFileName;
+    private String outputFileName;
     
     // log4j 配置文件的路径
     private String path2Log4jProperties;
@@ -52,20 +52,20 @@ public class AppConfig implements Serializable {
         this.path2WordOutput = path2WordOutput;
     }
 
-    public String getInputFilename() {
-        return inputFilename;
+    public String getInputFileName() {
+        return inputFileName;
     }
 
-    public void setInputFilename(String inputFilename) {
-        this.inputFilename = inputFilename;
+    public void setInputFileName(String inputFileName) {
+        this.inputFileName = inputFileName;
     }
 
-    public String getOutputFilename() {
-        return outputFilename;
+    public String getOutputFileName() {
+        return outputFileName;
     }
 
-    public void setOutputFilename(String outputFilename) {
-        this.outputFilename = outputFilename;
+    public void setOutputFileName(String outputFileName) {
+        this.outputFileName = outputFileName;
     }
 
     public String getPath2Log4jProperties() {
