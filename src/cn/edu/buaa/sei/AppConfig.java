@@ -6,33 +6,30 @@ public class AppConfig implements Serializable {
 
     private static final long serialVersionUID = 1754904648061167616L;
     private String author;
-    
+
     // 文件输入和输出的路径和文件名
     private String path2WordInput;
     private String path2WordOutput;
     private String inputFileName;
     private String outputFileName;
-    
+
     // log4j 配置文件的路径
     private String path2Log4jProperties;
-    
+
     // LTP - 服务器地址设置
     private String ltpServerHost;
     private String ltpServerPort;
     private String ltpServerPath;
 
-    public AppConfig()
-    {
-        this.author="Jeanhwea";
+    public AppConfig() {
+        this.author = "Jeanhwea";
     }
 
-    public String getAuthor()
-    {
+    public String getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author)
-    {
+    public void setAuthor(String author) {
         this.author = author;
     }
 

@@ -1,42 +1,36 @@
 package cn.edu.buaa.sei.util;
 
-import java.io.File;
-
+import cn.edu.buaa.sei.AppConfig;
 import com.alibaba.fastjson.JSON;
 
-import cn.edu.buaa.sei.AppConfig;
+import java.io.File;
 
 public class ConfigMgr {
-    
+
     private static String PATH_TO_INIT_CONFIG = "input/init.json";
     private static AppConfig conf = null;
 
-    public ConfigMgr()
-    {
+    public ConfigMgr() {
 
     }
-    
-    public static AppConfig getConfig()
-    {
+
+    public static AppConfig getConfig() {
         if (null == conf) {
             conf = allocConfig();
         }
         return conf;
     }
-    
-    public static void setPath2Config(String filename)
-    {
+
+    public static void setPath2Config(String filename) {
         PATH_TO_INIT_CONFIG = filename;
     }
-    
-    public static void write2File(String filename)
-    {
+
+    public static void write2File(String filename) {
         String text = JSON.toJSONString(conf);
         new GenericFileIO().write(text, filename);
     }
 
-    private static AppConfig defaultConfig()
-    {
+    private static AppConfig defaultConfig() {
         AppConfig appconfig = new AppConfig();
         appconfig.setAuthor("Jeanhwea");
         appconfig.setPath2WordInput("/home/hujh/Shared/input/");
@@ -50,8 +44,7 @@ public class ConfigMgr {
         return appconfig;
     }
 
-    private static AppConfig allocConfig()
-    {
+    private static AppConfig allocConfig() {
         File file = new File(PATH_TO_INIT_CONFIG);
         if (!file.exists()) {
             return defaultConfig();
@@ -60,5 +53,5 @@ public class ConfigMgr {
             return JSON.parseObject(text, AppConfig.class);
         }
     }
-    
+
 }

@@ -1,12 +1,6 @@
 package cn.edu.buaa.sei.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -17,13 +11,11 @@ public class HttpClient {
 
     private URLConnection conn;
 
-    public HttpClient()
-    {
+    public HttpClient() {
         conn = null;
     }
 
-    public String buildParams(HashMap<String, String> params)
-    {
+    public String buildParams(HashMap<String, String> params) {
         String str = null;
         StringBuilder sb = new StringBuilder();
 
@@ -39,8 +31,7 @@ public class HttpClient {
         return sb.toString();
     }
 
-    private String buildURL(String host, String port, String path)
-    {
+    private String buildURL(String host, String port, String path) {
         if (null == host) {
             host = "127.0.0.1";
         }
@@ -56,11 +47,10 @@ public class HttpClient {
 
     /**
      * 打开连接URL
-     * 
+     *
      * @param str_url 要打开的url链接
      */
-    public boolean urlOpen(String str_url)
-    {
+    public boolean urlOpen(String str_url) {
         try {
             URL url = new URL(str_url);
             conn = url.openConnection();
@@ -75,23 +65,21 @@ public class HttpClient {
 
     /**
      * 打开连接URL
-     * 
+     *
      * @param host 主机
      * @param port 端口号
      * @param path 路径
      */
-    public boolean urlOpen(String host, String port, String path)
-    {
+    public boolean urlOpen(String host, String port, String path) {
         return urlOpen(buildURL(host, port, path));
     }
 
     /**
      * 读取相应链接里面的数据，使用前必须先调用urlOpen(String str_url)打开链接
-     * 
+     *
      * @return 读入的字符串
      */
-    public String urlReadData()
-    {
+    public String urlReadData() {
         StringBuilder sb = new StringBuilder();
         try {
             String line;
@@ -108,11 +96,10 @@ public class HttpClient {
 
     /**
      * 写入相应链接里面的数据，使用前必须先调用urlOpen(String str_url)打开链接
-     * 
+     *
      * @param data 要写入的字符串
      */
-    public void urlWriteData(String data)
-    {
+    public void urlWriteData(String data) {
         try {
             OutputStream os = conn.getOutputStream();
             OutputStreamWriter writer = new OutputStreamWriter(os);

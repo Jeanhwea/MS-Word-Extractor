@@ -35,6 +35,6 @@ public class StopWatch {
     public long getStopTime(int nStopPoint) {
         if (nStopPoint > stopPoints.size() || nStopPoint <= 0)
             return -1;
-        return stopPoints.get(nStopPoint-1) - timeStart;
+        return stopPoints.get(nStopPoint - 1) - timeStart;
     }
 }

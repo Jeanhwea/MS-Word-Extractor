@@ -8,17 +8,14 @@ public class Step implements Serializable {
 
     private String text;
 
-    public Step()
-    {
+    public Step() {
     }
 
-    public String getText()
-    {
+    public String getText() {
         return text;
     }
 
-    public void setText(String text)
-    {
+    public void setText(String text) {
         this.text = text;
     }
 

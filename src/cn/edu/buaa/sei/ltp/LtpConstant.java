@@ -3,73 +3,82 @@ package cn.edu.buaa.sei.ltp;
 import java.util.HashMap;
 
 public class LtpConstant {
-    
-    /** 分词标注集 */
+
+    /**
+     * 分词标注集
+     */
     private static final HashMap<String, String> ws = allocWS();
-    /** 词性标注集 */
+    /**
+     * 词性标注集
+     */
     private static final HashMap<String, String> pos = allocPOS();
-    /** 命名实体识别标注集 */
+    /**
+     * 命名实体识别标注集
+     */
     private static final HashMap<String, String> ner = allocNER();
-    /** 依存句法关系 */
+    /**
+     * 依存句法关系
+     */
     private static final HashMap<String, String> dp = allocDP();
-    /** 语义角色类型 */
+    /**
+     * 语义角色类型
+     */
     private static final HashMap<String, String> srl = allocSRL();
 
 
-    public LtpConstant() { }
-    
+    public LtpConstant() {
+    }
+
     /**
      * 分词标注集
+     *
      * @param key 输入的查找键
      * @return
      */
-    public static String getWS(String key)
-    {
+    public static String getWS(String key) {
         return ws.get(key);
     }
-    
-    /** 
-     * 词性标注集 
+
+    /**
+     * 词性标注集
+     *
      * @param key 输入的查找键
      */
-    public static String getPOS(String key)
-    {
+    public static String getPOS(String key) {
         return pos.get(key);
     }
-    
-    /** 
+
+    /**
      * 命名实体识别标注集
+     *
      * @param key 输入的查找键
      */
-    public static String getNER(String key)
-    {
+    public static String getNER(String key) {
         return ner.get(key);
     }
-    
-    /** 
-     * 依存句法关系 
+
+    /**
+     * 依存句法关系
+     *
      * @param key 输入的查找键
      */
-    public static String getDP(String key)
-    {
+    public static String getDP(String key) {
         return dp.get(key);
     }
-    
-    /** 
-     * 语义角色类型集 
+
+    /**
+     * 语义角色类型集
+     *
      * @param key 输入的查找键
      */
-    public static String getSRL(String key)
-    {
+    public static String getSRL(String key) {
         return srl.get(key);
     }
 
     /**
-     * 
      * @return 分词标注集
      */
-    private static HashMap<String, String> allocWS()
-    {
+    private static HashMap<String, String> allocWS() {
         HashMap<String, String> ret = new HashMap<String, String>();
         ret.put("B", "词首");
         ret.put("I", "词中");
@@ -77,26 +86,26 @@ public class LtpConstant {
         ret.put("S", "单字成词");
         return ret;
     }
-    
+
     /**
      * LTP 使用的是863词性标注集
+     *
      * @return 词性标注集
      */
-    private static HashMap<String, String> allocPOS()
-    {
+    private static HashMap<String, String> allocPOS() {
         HashMap<String, String> ret = new HashMap<String, String>();
-        ret.put("a",  "adjective");
-        ret.put("b",  "other noun-modifier");
-        ret.put("c",  "conjunction");
-        ret.put("d",  "adverb");
-        ret.put("e",  "exclamation");
-        ret.put("g",  "morpheme");
-        ret.put("h",  "prefix");
-        ret.put("i",  "idiom");
-        ret.put("j",  "abbreviation");
-        ret.put("k",  "suffix");
-        ret.put("m",  "number");
-        ret.put("n",  "general noun");
+        ret.put("a", "adjective");
+        ret.put("b", "other noun-modifier");
+        ret.put("c", "conjunction");
+        ret.put("d", "adverb");
+        ret.put("e", "exclamation");
+        ret.put("g", "morpheme");
+        ret.put("h", "prefix");
+        ret.put("i", "idiom");
+        ret.put("j", "abbreviation");
+        ret.put("k", "suffix");
+        ret.put("m", "number");
+        ret.put("n", "general noun");
         ret.put("nd", "direction noun");
         ret.put("nh", "person name");
         ret.put("ni", "organization name");
@@ -104,42 +113,40 @@ public class LtpConstant {
         ret.put("ns", "geographical name");
         ret.put("nt", "temporal noun");
         ret.put("nz", "other proper noun");
-        ret.put("o",  "onomatopoeia");
-        ret.put("p",  "preposition");
-        ret.put("q",  "quantity");
-        ret.put("r",  "pronoun");
-        ret.put("u",  "auxiliary");
-        ret.put("v",  "verb");
+        ret.put("o", "onomatopoeia");
+        ret.put("p", "preposition");
+        ret.put("q", "quantity");
+        ret.put("r", "pronoun");
+        ret.put("u", "auxiliary");
+        ret.put("v", "verb");
         ret.put("wp", "punctuation");
         ret.put("ws", "foreign words");
-        ret.put("x",  "non-lexeme");
+        ret.put("x", "non-lexeme");
         return ret;
     }
-    
+
     /**
      * NE识别模块的标注结果采用O-S-B-I-E标注形式
+     *
      * @return 命名实体识别标注集
      */
-    private static HashMap<String, String> allocNER()
-    {
+    private static HashMap<String, String> allocNER() {
         HashMap<String, String> ret = new HashMap<String, String>();
-        ret.put("O",  "这个词不是NE");
-        ret.put("S",  "这个词单独构成一个NE");
-        ret.put("B",  "这个词为一个NE的开始");
-        ret.put("I",  "这个词为一个NE的中间");
+        ret.put("O", "这个词不是NE");
+        ret.put("S", "这个词单独构成一个NE");
+        ret.put("B", "这个词为一个NE的开始");
+        ret.put("I", "这个词为一个NE的中间");
         ret.put("Nh", "人名");
         ret.put("Ni", "机构名");
         ret.put("Ns", "地名");
-        ret.put("E",  "这个词位一个NE的结尾");
+        ret.put("E", "这个词位一个NE的结尾");
         return ret;
-    } 
+    }
 
     /**
-     *
      * @return 依存句法关系
      */
-    private static HashMap<String, String> allocDP()
-    {
+    private static HashMap<String, String> allocDP() {
         HashMap<String, String> ret = new HashMap<String, String>();
         ret.put("SBV", "主谓关系");
         ret.put("VOB", "动宾关系");
@@ -153,17 +160,15 @@ public class LtpConstant {
         ret.put("POB", "介宾关系");
         ret.put("LAD", "左附加关系");
         ret.put("RAD", "右附加关系");
-        ret.put("IS",  "独立结构");
+        ret.put("IS", "独立结构");
         ret.put("HED", "核心关系");
         return ret;
     }
-    
+
     /**
-     * 
      * @return 语义角色类型
      */
-    private static HashMap<String, String> allocSRL()
-    {
+    private static HashMap<String, String> allocSRL() {
         HashMap<String, String> ret = new HashMap<String, String>();
         ret.put("ADV", "附加的，默认标记");
         ret.put("BNE", "受益人");
