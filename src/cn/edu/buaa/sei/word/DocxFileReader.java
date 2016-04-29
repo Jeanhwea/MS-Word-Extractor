@@ -1,6 +1,6 @@
 package cn.edu.buaa.sei.word;
 
-import cn.edu.buaa.sei.rucm.ds.Input;
+import cn.edu.buaa.sei.rucm.RucmHelper;
 import cn.edu.buaa.sei.rucm.ds.UseCase;
 import cn.edu.buaa.sei.util.Helper;
 import cn.edu.buaa.sei.word.ds.DocxParagraph;
@@ -23,6 +23,32 @@ public class DocxFileReader extends ComWordReader {
         super();
     }
 
+    private String simplifyFieldName(String nameStr) {
+
+        if (nameStr.trim().startsWith("Use case name"))
+            return "UseCase";
+
+        if (nameStr.trim().startsWith("Precondition"))
+            return "PreCondition";
+
+        if (nameStr.trim().startsWith("Postcondition"))
+            return "PostCondition";
+
+        if (nameStr.trim().startsWith("Input"))
+            return "Input";
+
+        if (nameStr.trim().startsWith("Output"))
+            return "Output";
+
+        if (nameStr.trim().startsWith("Basic flow"))
+            return "BasicFlow";
+
+        if (nameStr.trim().startsWith("Specific alternative flows"))
+            return "AlterFlow";
+
+        return "null";
+    }
+
     public void close() throws IOException {
         if (null != docx)
             docx.close();
@@ -34,12 +60,7 @@ public class DocxFileReader extends ComWordReader {
         if (!file.exists()) return false;
 
         fis = new FileInputStream(file);
-        if (null == fis)
-            return false;
-
         docx = new XWPFDocument(fis);
-        if (null == docx)
-            return false;
 
         return true;
     }
@@ -75,8 +96,8 @@ public class DocxFileReader extends ComWordReader {
         logger.info("Total Use Case Count : " + useCaseCounter);
     }
 
-    public UseCase extractRUCM(XWPFTable table) {
-        UseCase useCase = null;
+    private UseCase extractRUCM(XWPFTable table) {
+        UseCase uc = null;
 
         String keyStr = null, valStr = null;
         List<XWPFTableRow> rows;
@@ -90,15 +111,9 @@ public class DocxFileReader extends ComWordReader {
             valStr = cells.get(1).getText();
         }
         if (null == keyStr) return null;
-        if ("UseCase" == simplifyFieldName(keyStr)) {
-            useCase = new UseCase();
-            useCase.setUseCaseName(valStr);
-            useCase.setPreConditions(new ArrayList<>());
-            useCase.setInputs(new ArrayList<>());
-            useCase.setOutputs(new ArrayList<>());
-            useCase.setBasicFlow(new ArrayList<>());
-            useCase.setPostConditions(new ArrayList<>());
-            useCase.setAlterFlow(new ArrayList<>());
+        if ("UseCase".equals(simplifyFieldName(keyStr))) {
+            uc = RucmHelper.allocUseCase(keyStr);
+
             // handler other field
             for (int i = 1; i < rows.size(); ++i) {
                 cells = rows.get(i).getTableCells();
@@ -108,22 +123,43 @@ public class DocxFileReader extends ComWordReader {
                 }
                 if (null == keyStr) return null;
                 switch (simplifyFieldName(keyStr)) {
+                    case "PreCondition":
+                        RucmHelper.addPreCondition2UseCase(RucmHelper.allocCondition(valStr), uc);
+                        break;
                     case "Input":
-                        Input input = new Input();
-                        input.setText(valStr);
+                        RucmHelper.addInput2UseCase(RucmHelper.allocInput(valStr), uc);
+                        break;
+                    case "Output":
+                        RucmHelper.addOutput2UseCase(RucmHelper.allocOutput(valStr), uc);
+                        break;
+                    case "PostCondition":
+                        RucmHelper.addPostCondition2UseCase(RucmHelper.allocCondition(valStr), uc);
+                        break;
+                    case "BasicFlow":
+                        RucmHelper.addStep2BasicFlow(RucmHelper.allocStep(valStr), uc.getBasicFlow());
+                        for (;;) {
+                            cells = rows.get(++i).getTableCells();
+                            if (cells.size() >= 2) {
+                                keyStr = cells.get(0).getText();
+                                valStr = cells.get(1).getText();
+                            }
+                            if ("null".equals(simplifyFieldName(keyStr))) {
+                                RucmHelper.addStep2BasicFlow(RucmHelper.allocStep(valStr), uc.getBasicFlow());
+                            } else {
+                                --i;
+                                break;
+                            }
+                        }
+                        break;
+                    case "AlterFlow":
+                        RucmHelper.addFlow2AlterFlow(RucmHelper.allocFlow(), uc.getAlterFlow());
                         break;
                 }
             }
         }
-        return useCase;
+        return uc;
     }
 
 
-    private String simplifyFieldName(String nameStr) {
-        if (nameStr.trim().startsWith("Use case name"))
-            return "UseCase";
-
-        return "null";
-    }
 }
 

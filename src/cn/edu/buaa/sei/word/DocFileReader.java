@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 public class DocFileReader extends ComWordReader {
 
-    HWPFDocument doc;
-    FileInputStream fis;
+    private HWPFDocument doc;
+    private FileInputStream fis;
 
     public DocFileReader() {
         super();
@@ -31,12 +31,8 @@ public class DocFileReader extends ComWordReader {
         if (!file.exists()) return false;
 
         fis = new FileInputStream(file);
-        if (null == fis)
-            return false;
-
         doc = new HWPFDocument(fis);
-        if (null == doc)
-            return false;
+
         return true;
     }
 
