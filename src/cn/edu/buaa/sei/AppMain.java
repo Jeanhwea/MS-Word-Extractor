@@ -21,7 +21,7 @@ public class AppMain {
         StopWatch watch = new StopWatch();
         logger.info("AppMain Starting ...");
         logger.trace(JSON.toJSONString(conf));
-
+        // open and read doc or docx format files
         DocxFileReader reader = new DocxFileReader();
 //        DocFileReader reader = new DocFileReader();
         try {
@@ -30,7 +30,6 @@ public class AppMain {
 //            reader.processParagraphs();
             reader.processTables();
             reader.close();
-
 //            WordTitleNode json = reader.getDocxTop();
 //            LtpStat stat = new LtpStat();
 //            stat.startCount(json);
@@ -38,7 +37,7 @@ public class AppMain {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        // logging elapsed time in seconds
         logger.info("AppMain finished, elapsedTimes: " + watch.getElapsedTimeInSeconds() + "s");
     }
 

@@ -23,16 +23,13 @@ public class DocFileReader extends ComWordReader {
     }
 
     public void close() throws IOException {
-        if (null != fis)
-            fis.close();
+        if (null != fis) fis.close();
     }
 
     public boolean open(File file) throws IOException {
         if (!file.exists()) return false;
-
         fis = new FileInputStream(file);
         doc = new HWPFDocument(fis);
-
         return true;
     }
 
@@ -45,7 +42,6 @@ public class DocFileReader extends ComWordReader {
         ArrayList<WordParagraph> list = new ArrayList<>();
         Range range = doc.getRange();
         StyleSheet stylesheet = doc.getStyleSheet();
-
         for (int i = 0; i < range.numParagraphs(); i++) {
             Paragraph para = range.getParagraph(i);
             String strStyle = stylesheet.getStyleDescription(para.getStyleIndex()).getName();

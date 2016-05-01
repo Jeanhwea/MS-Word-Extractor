@@ -2,9 +2,11 @@ package cn.edu.buaa.sei.word;
 
 import cn.edu.buaa.sei.rucm.RucmHelper;
 import cn.edu.buaa.sei.rucm.ds.UseCase;
+import cn.edu.buaa.sei.util.GenericFileIO;
 import cn.edu.buaa.sei.util.Helper;
 import cn.edu.buaa.sei.word.ds.DocxParagraph;
 import cn.edu.buaa.sei.word.ds.WordParagraph;
+import com.alibaba.fastjson.JSON;
 import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.File;
@@ -15,7 +17,6 @@ import java.util.List;
 
 
 public class DocxFileReader extends ComWordReader {
-
     private XWPFDocument docx;
     private FileInputStream fis;
 
@@ -24,44 +25,32 @@ public class DocxFileReader extends ComWordReader {
     }
 
     private String simplifyFieldName(String nameStr) {
-
-        if (nameStr.trim().startsWith("Use case name"))
+        if (nameStr.trim().startsWith("Use"))
             return "UseCase";
-
-        if (nameStr.trim().startsWith("Precondition"))
+        if (nameStr.trim().startsWith("Precond"))
             return "PreCondition";
-
-        if (nameStr.trim().startsWith("Postcondition"))
+        if (nameStr.trim().startsWith("Postcond"))
             return "PostCondition";
-
         if (nameStr.trim().startsWith("Input"))
             return "Input";
-
         if (nameStr.trim().startsWith("Output"))
             return "Output";
-
-        if (nameStr.trim().startsWith("Basic flow"))
+        if (nameStr.trim().startsWith("Basic"))
             return "BasicFlow";
-
-        if (nameStr.trim().startsWith("Specific alternative flows"))
+        if (nameStr.trim().startsWith("Specific"))
             return "AlterFlow";
-
         return "null";
     }
 
     public void close() throws IOException {
-        if (null != docx)
-            docx.close();
-        if (null != fis)
-            fis.close();
+        if (null != docx) docx.close();
+        if (null != fis) fis.close();
     }
 
     public boolean open(File file) throws IOException {
         if (!file.exists()) return false;
-
         fis = new FileInputStream(file);
         docx = new XWPFDocument(fis);
-
         return true;
     }
 
@@ -86,25 +75,31 @@ public class DocxFileReader extends ComWordReader {
     @Override
     public void processTables() {
         int useCaseCounter = 0;
-
-        for (XWPFTable tab : docx.getTables()) {
-            UseCase uc = extractRUCM(tab);
+        List<XWPFTable> tables = docx.getTables();
+        for (int i = 1; i < tables.size()-2; ++i) {
+            XWPFTable tab = tables.get(i), nexttab = tables.get(i+1);
+            List<XWPFTableRow> rows = tab.getRows();
+            if (!nexttab.getText().trim().startsWith("Use case name")) {
+                rows.addAll(nexttab.getRows());
+                i++;
+            }
+            UseCase uc = extractRUCM(rows);
             if (null == uc) continue;
             useCaseCounter++;
             logger.info(useCaseCounter + uc.getUseCaseName());
+//            String filename = String.format("%s%02d-%s.json", conf.getPath2WordOutput(), useCaseCounter, uc.getUseCaseName());
+//            new GenericFileIO().write(JSON.toJSONString(uc), filename);
         }
         logger.info("Total Use Case Count : " + useCaseCounter);
     }
 
-    private UseCase extractRUCM(XWPFTable table) {
+    private UseCase extractRUCM(List<XWPFTableRow> rows) {
         UseCase uc = null;
-
         String keyStr = null, valStr = null;
-        List<XWPFTableRow> rows;
         List<XWPFTableCell> cells;
-
-        rows = table.getRows();
-        if (rows.size() <= 0) return null;
+        if (rows.size() <= 0) {
+            return null;
+        }
         cells = rows.get(0).getTableCells();
         if (cells.size() >= 2) {
             keyStr = cells.get(0).getText();
@@ -112,8 +107,7 @@ public class DocxFileReader extends ComWordReader {
         }
         if (null == keyStr) return null;
         if ("UseCase".equals(simplifyFieldName(keyStr))) {
-            uc = RucmHelper.allocUseCase(keyStr);
-
+            uc = RucmHelper.allocUseCase(valStr);
             // handler other field
             for (int i = 1; i < rows.size(); ++i) {
                 cells = rows.get(i).getTableCells();
@@ -136,15 +130,15 @@ public class DocxFileReader extends ComWordReader {
                         RucmHelper.addPostCondition2UseCase(RucmHelper.allocCondition(valStr), uc);
                         break;
                     case "BasicFlow":
-                        RucmHelper.addStep2BasicFlow(RucmHelper.allocStep(valStr), uc.getBasicFlow());
-                        for (;;) {
-                            cells = rows.get(++i).getTableCells();
+                        RucmHelper.addBasicFlow2UseCase(RucmHelper.allocStep(valStr), uc.getBasicFlow());
+                        for ( ; i < rows.size()-1; ) {
+                            cells=rows.get(++i).getTableCells();
                             if (cells.size() >= 2) {
                                 keyStr = cells.get(0).getText();
                                 valStr = cells.get(1).getText();
                             }
                             if ("null".equals(simplifyFieldName(keyStr))) {
-                                RucmHelper.addStep2BasicFlow(RucmHelper.allocStep(valStr), uc.getBasicFlow());
+                                RucmHelper.addBasicFlow2UseCase(RucmHelper.allocStep(valStr), uc.getBasicFlow());
                             } else {
                                 --i;
                                 break;
@@ -152,14 +146,43 @@ public class DocxFileReader extends ComWordReader {
                         }
                         break;
                     case "AlterFlow":
-                        RucmHelper.addFlow2AlterFlow(RucmHelper.allocFlow(), uc.getAlterFlow());
+                        RucmHelper.addAlterFlow2UseCase(RucmHelper.allocFlow(), uc.getAlterFlow());
+                        // 解析valStr，用来获得参考的Basic Flow
+                        for (int p = 0; p < valStr.length(); p++) {
+                            int sum = 0;
+                            char ch; boolean flag = false;
+                            for (; (p < valStr.length()) && Character.isDigit(ch = valStr.charAt(p)); p++) {
+                                sum = 10 * sum + ch - '0';
+                                flag = true;
+                            }
+                            if (flag)
+                                RucmHelper.appendReferBasicFlow2UseCase(new Integer(sum), uc);
+                        }
+                        for ( ; i < rows.size()-1; ) {
+                            cells=rows.get(++i).getTableCells();
+                            keyStr = cells.get(0).getText();
+                            if (!"null".equals(simplifyFieldName(keyStr))) {
+                                --i;
+                                break;
+                            }
+                            if (2==cells.size()) {
+                                valStr = cells.get(1).getText();
+                                RucmHelper.appendStep2UseCase(RucmHelper.allocStep(valStr), uc);
+                            } else if (3==cells.size()) {
+                                if ("PostCondition".equals(simplifyFieldName(cells.get(1).getText()))) {
+                                    valStr = cells.get(2).getText();
+                                    RucmHelper.appendPostCondition2UseCase(RucmHelper.allocCondition(valStr), uc);
+                                }
+                            }
+
+                            logger.info(keyStr+"-"+valStr);
+                        }
                         break;
                 }
             }
         }
         return uc;
     }
-
 
 }
 

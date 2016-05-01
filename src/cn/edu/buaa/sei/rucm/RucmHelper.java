@@ -48,6 +48,9 @@ public class RucmHelper {
 
     public static Flow allocFlow() {
         Flow flow = new Flow();
+        flow.setBasicFlowSteps(new ArrayList<>());
+        flow.setSteps(new ArrayList<>());
+        flow.setPostConditions(new ArrayList<>());
         return flow;
     }
 
@@ -67,11 +70,38 @@ public class RucmHelper {
         useCase.getPostConditions().add(postCondition);
     }
 
-    public static void addStep2BasicFlow(Step step, List<Step> basicFlow) {
+    public static void addBasicFlow2UseCase(Step step, List<Step> basicFlow) {
         basicFlow.add(step);
     }
 
-    public static void addFlow2AlterFlow(Flow flow, List<Flow> alterFlow) {
+    public static void addAlterFlow2UseCase(Flow flow, List<Flow> alterFlow) {
         alterFlow.add(flow);
+    }
+
+    public static void addReferBasicFlow2AlterFlow(Integer rfsBasicFlow, Flow flow) {
+        flow.getBasicFlowSteps().add(rfsBasicFlow);
+    }
+
+    public static void addStep2AlterFlow(Step step, Flow flow) {
+        flow.getSteps().add(step);
+    }
+
+    public static void addPostCondition2AlterFlow(Condition postCondition, Flow flow) {
+        flow.getPostConditions().add(postCondition);
+    }
+
+    public static void appendReferBasicFlow2UseCase(Integer rfsBasicFlow, UseCase useCase) {
+        Flow lastAlterFlow = useCase.getAlterFlow().get(useCase.getAlterFlow().size()-1);
+        addReferBasicFlow2AlterFlow(rfsBasicFlow, lastAlterFlow);
+    }
+
+    public static void appendStep2UseCase(Step step, UseCase useCase) {
+        Flow lastAlterFlow = useCase.getAlterFlow().get(useCase.getAlterFlow().size()-1);
+        addStep2AlterFlow(step, lastAlterFlow);
+    }
+
+    public static void appendPostCondition2UseCase(Condition postCondition, UseCase useCase) {
+        Flow lastAlterFlow = useCase.getAlterFlow().get(useCase.getAlterFlow().size()-1);
+        addPostCondition2AlterFlow(postCondition, lastAlterFlow);
     }
 }
