@@ -83,7 +83,7 @@ public class DocxFileReader extends ComWordReader {
                 rows.addAll(nexttab.getRows());
                 i++;
             }
-            UseCase uc = extractRUCM(rows);
+            UseCase uc = extractRucm(rows);
             if (null == uc) continue;
             useCaseCounter++;
             logger.info(useCaseCounter + uc.getUseCaseName());
@@ -93,7 +93,7 @@ public class DocxFileReader extends ComWordReader {
         logger.info("Total Use Case Count : " + useCaseCounter);
     }
 
-    private UseCase extractRUCM(List<XWPFTableRow> rows) {
+    private UseCase extractRucm(List<XWPFTableRow> rows) {
         UseCase uc = null;
         String keyStr = null, valStr = null;
         List<XWPFTableCell> cells;
