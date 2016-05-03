@@ -1,7 +1,5 @@
 package cn.edu.buaa.sei.util;
 
-import javafx.embed.swing.JFXPanel;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -12,6 +10,10 @@ import java.awt.*;
 public class SimpleUI {
 
     private static JFrame jFrame;
+
+    public SimpleUI() {
+        jFrame = new JFrame();
+    }
 
     public String chooseAFile(String startPath) {
         if (null == startPath) return null;
@@ -29,19 +31,16 @@ public class SimpleUI {
 
     public void showText(String text, String windowTitle) {
         jFrame.setTitle(windowTitle);
-        JTextArea jTextArea = new JTextArea();
+        JTextArea jTextArea = new JTextArea("", 50, 80);
+        JScrollPane jScrollPane = new JScrollPane(jTextArea);
         Font font = new Font("Dialog", Font.PLAIN, 16);
         //
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jTextArea.append(text);
         jTextArea.setFont(font);
         jTextArea.setEditable(false);
-        jFrame.add(jTextArea);
+        jFrame.add(jScrollPane);
         jFrame.pack();
         jFrame.setVisible(true);
-    }
-
-    public SimpleUI() {
-        jFrame = new JFrame();
     }
 }

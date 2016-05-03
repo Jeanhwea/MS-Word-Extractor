@@ -91,17 +91,17 @@ public class RucmHelper {
     }
 
     public static void appendReferBasicFlow2UseCase(Integer rfsBasicFlow, UseCase useCase) {
-        Flow lastAlterFlow = useCase.getAlterFlow().get(useCase.getAlterFlow().size()-1);
+        Flow lastAlterFlow = useCase.getAlterFlow().get(useCase.getAlterFlow().size() - 1);
         addReferBasicFlow2AlterFlow(rfsBasicFlow, lastAlterFlow);
     }
 
     public static void appendStep2UseCase(Step step, UseCase useCase) {
-        Flow lastAlterFlow = useCase.getAlterFlow().get(useCase.getAlterFlow().size()-1);
+        Flow lastAlterFlow = useCase.getAlterFlow().get(useCase.getAlterFlow().size() - 1);
         addStep2AlterFlow(step, lastAlterFlow);
     }
 
     public static void appendPostCondition2UseCase(Condition postCondition, UseCase useCase) {
-        Flow lastAlterFlow = useCase.getAlterFlow().get(useCase.getAlterFlow().size()-1);
+        Flow lastAlterFlow = useCase.getAlterFlow().get(useCase.getAlterFlow().size() - 1);
         addPostCondition2AlterFlow(postCondition, lastAlterFlow);
     }
 }

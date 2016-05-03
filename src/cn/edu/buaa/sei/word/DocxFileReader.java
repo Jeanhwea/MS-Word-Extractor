@@ -2,11 +2,9 @@ package cn.edu.buaa.sei.word;
 
 import cn.edu.buaa.sei.rucm.RucmHelper;
 import cn.edu.buaa.sei.rucm.ds.UseCase;
-import cn.edu.buaa.sei.util.GenericFileIO;
 import cn.edu.buaa.sei.util.Helper;
 import cn.edu.buaa.sei.word.ds.DocxParagraph;
 import cn.edu.buaa.sei.word.ds.WordParagraph;
-import com.alibaba.fastjson.JSON;
 import org.apache.poi.xwpf.usermodel.*;
 
 import java.io.File;
@@ -76,8 +74,8 @@ public class DocxFileReader extends ComWordReader {
     public void processTables() {
         int useCaseCounter = 0;
         List<XWPFTable> tables = docx.getTables();
-        for (int i = 1; i < tables.size()-2; ++i) {
-            XWPFTable tab = tables.get(i), nexttab = tables.get(i+1);
+        for (int i = 1; i < tables.size() - 2; ++i) {
+            XWPFTable tab = tables.get(i), nexttab = tables.get(i + 1);
             List<XWPFTableRow> rows = tab.getRows();
             if (!nexttab.getText().trim().startsWith("Use case name")) {
                 rows.addAll(nexttab.getRows());
@@ -131,8 +129,8 @@ public class DocxFileReader extends ComWordReader {
                         break;
                     case "BasicFlow":
                         RucmHelper.addBasicFlow2UseCase(RucmHelper.allocStep(valStr), uc.getBasicFlow());
-                        for ( ; i < rows.size()-1; ) {
-                            cells=rows.get(++i).getTableCells();
+                        for (; i < rows.size() - 1; ) {
+                            cells = rows.get(++i).getTableCells();
                             if (cells.size() >= 2) {
                                 keyStr = cells.get(0).getText();
                                 valStr = cells.get(1).getText();
@@ -150,7 +148,8 @@ public class DocxFileReader extends ComWordReader {
                         // 解析valStr，用来获得参考的Basic Flow
                         for (int p = 0; p < valStr.length(); p++) {
                             int sum = 0;
-                            char ch; boolean flag = false;
+                            char ch;
+                            boolean flag = false;
                             for (; (p < valStr.length()) && Character.isDigit(ch = valStr.charAt(p)); p++) {
                                 sum = 10 * sum + ch - '0';
                                 flag = true;
@@ -158,24 +157,24 @@ public class DocxFileReader extends ComWordReader {
                             if (flag)
                                 RucmHelper.appendReferBasicFlow2UseCase(new Integer(sum), uc);
                         }
-                        for ( ; i < rows.size()-1; ) {
-                            cells=rows.get(++i).getTableCells();
+                        for (; i < rows.size() - 1; ) {
+                            cells = rows.get(++i).getTableCells();
                             keyStr = cells.get(0).getText();
                             if (!"null".equals(simplifyFieldName(keyStr))) {
                                 --i;
                                 break;
                             }
-                            if (2==cells.size()) {
+                            if (2 == cells.size()) {
                                 valStr = cells.get(1).getText();
                                 RucmHelper.appendStep2UseCase(RucmHelper.allocStep(valStr), uc);
-                            } else if (3==cells.size()) {
+                            } else if (3 == cells.size()) {
                                 if ("PostCondition".equals(simplifyFieldName(cells.get(1).getText()))) {
                                     valStr = cells.get(2).getText();
                                     RucmHelper.appendPostCondition2UseCase(RucmHelper.allocCondition(valStr), uc);
                                 }
                             }
 
-                            logger.info(keyStr+"-"+valStr);
+                            logger.info(keyStr + "-" + valStr);
                         }
                         break;
                 }

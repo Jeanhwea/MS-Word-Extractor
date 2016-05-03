@@ -13,7 +13,7 @@ public class RucmReader {
     GenericFileIO gfio = null;
     AppConfig conf;
 
-    public RucmReader () {
+    public RucmReader() {
         conf = ConfigMgr.getConfig();
         gfio = new GenericFileIO();
     }
@@ -40,7 +40,7 @@ public class RucmReader {
         sb.append(String.format("UseCase  : %s\n", uc.getUseCaseName()));
         i = 0;
         for (Condition cond : uc.getPreConditions()) {
-            if (i==0)
+            if (i == 0)
                 sb.append(String.format("PreCond  : %s\n", cond.getText()));
             else
                 sb.append(String.format("         : %s\n", cond.getText()));
@@ -48,15 +48,15 @@ public class RucmReader {
         }
         i = 0;
         for (Input input : uc.getInputs()) {
-            if (i==0)
+            if (i == 0)
                 sb.append(String.format("Input:\n          %s\n", input.getText()));
             else
                 sb.append(String.format("          %s\n", input.getText()));
             ++i;
         }
         i = 0;
-        for (Output output: uc.getOutputs()) {
-            if (i==0)
+        for (Output output : uc.getOutputs()) {
+            if (i == 0)
                 sb.append(String.format("Output:\n          %s\n", output.getText()));
             else
                 sb.append(String.format("          %s\n", output.getText()));
@@ -64,14 +64,14 @@ public class RucmReader {
         }
         i = 0;
         for (Step step : uc.getBasicFlow()) {
-            if (i==0)
-                sb.append(String.format("BasicFlow:\n          %3d. %s\n", ++i, step.getText()));
+            if (i == 0)
+                sb.append(String.format("BasicFlow:\n          %03d. %s\n", ++i, step.getText()));
             else
-                sb.append(String.format("          %3d. %s\n", ++i, step.getText()));
+                sb.append(String.format("          %03d. %s\n", ++i, step.getText()));
         }
         i = 0;
         for (Condition cond : uc.getPostConditions()) {
-            if (i==0)
+            if (i == 0)
                 sb.append(String.format("PostCond : %s\n", cond.getText()));
             else
                 sb.append(String.format("         : %s\n", cond.getText()));
@@ -84,11 +84,11 @@ public class RucmReader {
             sb.append(String.format("AlterFlow: %s\n", rfs));
             int j = 0;
             for (Step step : flow.getSteps()) {
-                sb.append(String.format("           %3d. %s\n", ++j, step.getText()));
+                sb.append(String.format("           %03d. %s\n", ++j, step.getText()));
             }
             j = 0;
             for (Condition cond : flow.getPostConditions()) {
-                if (j==0)
+                if (j == 0)
                     sb.append(String.format("     Post: %s\n", cond.getText()));
                 else
                     sb.append(String.format("         : %s\n", cond.getText()));
