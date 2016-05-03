@@ -1,5 +1,7 @@
 package cn.edu.buaa.sei.util;
 
+import javafx.embed.swing.JFXPanel;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -8,6 +10,8 @@ import java.awt.*;
  * Created by hujh on 5/3/16.
  */
 public class SimpleUI {
+
+    private static JFrame jFrame;
 
     public String chooseAFile(String startPath) {
         if (null == startPath) return null;
@@ -24,7 +28,7 @@ public class SimpleUI {
     }
 
     public void showText(String text, String windowTitle) {
-        JFrame jFrame = new JFrame(windowTitle);
+        jFrame.setTitle(windowTitle);
         JTextArea jTextArea = new JTextArea();
         Font font = new Font("Dialog", Font.PLAIN, 16);
         //
@@ -37,5 +41,7 @@ public class SimpleUI {
         jFrame.setVisible(true);
     }
 
-    public SimpleUI() {}
+    public SimpleUI() {
+        jFrame = new JFrame();
+    }
 }
